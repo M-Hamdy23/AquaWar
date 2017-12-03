@@ -34,8 +34,38 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName) {
     }
 
     this.fire = function() {
+        if (this.playerObj.animations.currentAnim.name === 'fire') {
+            this.playerObj.animations.currentAnim.onComplete.add(
+                function() {
+                    this.x = this.playerObj.x;
+                    this.y = this.playerObj.y;
+                    this.playerObj.kill();
+                    this.playerObj = game.add.sprite(this.x, this.y, imageName);
+                    this.playerObj.animations.add(this.animationName);
+                    this.playerObj.animations.play(this.animationName, 5, true);
+                    this.playerObj.anchor.setTo(0.5, 0.5);
+                    game.physics.arcade.enable(this.playerObj);
+                    if (this.LeftFlag) {
+                        this.playerObj.scale.x = -1;
+
+                    } else {
+                        this.playerObj.scale.x = 1;
+
+                    }
+                }, this);
+        }
         if (this.cursor.fire.isDown) {
-            if (LeftFlag) {
+            this.x = this.playerObj.x;
+            this.y = this.playerObj.y;
+            this.playerObj.kill();
+            this.playerObj = game.add.sprite(this.x, this.y, fireSpriteName);
+            this.playerObj.animations.add('fire');
+            //console.log("animation name:" + this.playerObj.animations);
+            this.playerObj.animations.play('fire', 5, false);
+            this.playerObj.anchor.setTo(0.5, 0.5);
+            game.physics.arcade.enable(this.playerObj);
+            console.log("current : " + this.playerObj.animations.currentAnim.name);
+            if (this.LeftFlag) {
                 this.playerObj.scale.x = -1;
 
             } else {
@@ -48,11 +78,11 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName) {
         if (this.cursor.left.isDown) {
             this.playerObj.body.gravity.x = -500;
             this.playerObj.scale.x = -1;
-            LeftFlag = true;
+            this.LeftFlag = true;
         } else if (this.cursor.right.isDown) {
             this.playerObj.body.gravity.x = 500;
             this.playerObj.scale.x = 1;
-            LeftFlag = false;
+            this.LeftFlag = false;
         } else {
             if (this.playerObj.body.velocity.x > 0)
                 this.playerObj.body.velocity.x -= 10;

@@ -1,8 +1,9 @@
 var mainState = {
     preload: function() {
         // This function will be executed at the beginning 
-        // That's where we load the game's assets 
+        // That's where we load the game's assets shoot animation.png
         game.load.spritesheet('player', 'assets/move_animation.png', 200, 200);
+        game.load.spritesheet('FireAnimate', 'assets/shoot animation.png', 200, 200);
         game.load.image('wallV', 'assets/wallVertical.png');
         game.load.image('wallH', 'assets/wallHorizontal.png');
         game.load.image('bullet', 'assets/bullet.png');
@@ -26,11 +27,11 @@ var mainState = {
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.playerOne = new CreatePlayer('player', 'walk');
+        this.playerOne = new CreatePlayer('player', 'walk', 'FireAnimate');
         this.playerOne.init();
         this.playerOne.setControlKey('cursor');
 
-        this.playerTwo = new CreatePlayer('player', 'walk');
+        this.playerTwo = new CreatePlayer('player', 'walk', 'FireAnimate');
         this.playerTwo.init();
         this.playerTwo.setControlKey('');
 
