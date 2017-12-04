@@ -1,8 +1,9 @@
-var CreatePlayer = function(imageName, animateName, fireSpriteName) {
-    this.playerObj;
+var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSpriteName) {
+    this.body;
     this.spriteName = imageName || '';
     this.animationName = animateName || '';
     this.fireSpriteName = fireSpriteName || '';
+    this.bulletSpriteName = bulletSpriteName || '';
     this.x = game.world.centerX;
     this.y = game.world.centerY;
     this.health = 100;
@@ -10,11 +11,11 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName) {
 
     this.cursor;
     this.init = function() {
-        this.playerObj = game.add.sprite(this.x, this.y, imageName);
-        this.playerObj.animations.add(this.animationName);
-        this.playerObj.animations.play(this.animationName, 5, true);
-        this.playerObj.anchor.setTo(0.5, 0.5);
-        game.physics.arcade.enable(this.playerObj);
+        this.body = game.add.sprite(this.x, this.y, imageName);
+        this.body.animations.add(this.animationName);
+        this.body.animations.play(this.animationName, 5, true);
+        this.body.anchor.setTo(0.5, 0.5);
+        game.physics.arcade.enable(this.body);
     }
 
     this.setControlKey = function(keyType) {
@@ -33,74 +34,82 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName) {
         }
     }
 
+    this.newBullet = function() {
+        let bul = new Bullet(bulletSpriteName, this.body.body.x + 100, this.body.body.y);
+        bul.init();
+    }
     this.fire = function() {
-        if (this.playerObj.animations.currentAnim.name === 'fire') {
-            this.playerObj.animations.currentAnim.onComplete.add(
+        if (this.body.animations.currentAnim.name === 'fire') {
+            this.body.animations.currentAnim.onComplete.add(
                 function() {
-                    this.x = this.playerObj.x;
-                    this.y = this.playerObj.y;
-                    this.playerObj.kill();
-                    this.playerObj = game.add.sprite(this.x, this.y, imageName);
-                    this.playerObj.animations.add(this.animationName);
-                    this.playerObj.animations.play(this.animationName, 5, true);
-                    this.playerObj.anchor.setTo(0.5, 0.5);
-                    game.physics.arcade.enable(this.playerObj);
+                    this.x = this.body.x;
+                    this.y = this.body.y;
+
+                    /////////////////
+                    //// creat bullet
+                    /////////////////
+                    this.body.kill();
+                    this.body = game.add.sprite(this.x, this.y, imageName);
+                    this.body.animations.add(this.animationName);
+                    this.body.animations.play(this.animationName, 5, true);
+                    this.body.anchor.setTo(0.5, 0.5);
+                    game.physics.arcade.enable(this.body);
                     if (this.LeftFlag) {
-                        this.playerObj.scale.x = -1;
+                        this.body.scale.x = -1;
 
                     } else {
-                        this.playerObj.scale.x = 1;
+                        this.body.scale.x = 1;
 
                     }
                 }, this);
         }
         if (this.cursor.fire.isDown) {
-            this.x = this.playerObj.x;
-            this.y = this.playerObj.y;
-            this.playerObj.kill();
-            this.playerObj = game.add.sprite(this.x, this.y, fireSpriteName);
-            this.playerObj.animations.add('fire');
-            //console.log("animation name:" + this.playerObj.animations);
-            this.playerObj.animations.play('fire', 5, false);
-            this.playerObj.anchor.setTo(0.5, 0.5);
-            game.physics.arcade.enable(this.playerObj);
-            console.log("current : " + this.playerObj.animations.currentAnim.name);
+            this.x = this.body.x;
+            this.y = this.body.y;
+            this.body.kill();
+            this.body = game.add.sprite(this.x, this.y, fireSpriteName);
+            this.body.animations.add('fire');
+            //console.log("animation name:" + this.body.animations);
+            this.body.animations.play('fire', 5, false);
+            this.body.anchor.setTo(0.5, 0.5);
+            game.physics.arcade.enable(this.body);
+            console.log("current : " + this.body.animations.currentAnim.name);
             if (this.LeftFlag) {
-                this.playerObj.scale.x = -1;
+                this.body.scale.x = -1;
 
             } else {
-                this.playerObj.scale.x = 1;
+                this.body.scale.x = 1;
 
             }
         }
     }
     this.move = function() {
         if (this.cursor.left.isDown) {
-            this.playerObj.body.gravity.x = -500;
-            this.playerObj.scale.x = -1;
+            this.body.body.gravity.x = -500;
+            this.body.scale.x = -1;
             this.LeftFlag = true;
         } else if (this.cursor.right.isDown) {
-            this.playerObj.body.gravity.x = 500;
-            this.playerObj.scale.x = 1;
+            this.body.body.gravity.x = 500;
+            this.body.scale.x = 1;
             this.LeftFlag = false;
         } else {
-            if (this.playerObj.body.velocity.x > 0)
-                this.playerObj.body.velocity.x -= 10;
-            else if (this.playerObj.body.velocity.x < 0)
-                this.playerObj.body.velocity.x += 10;
+            if (this.body.body.velocity.x > 0)
+                this.body.body.velocity.x -= 10;
+            else if (this.body.body.velocity.x < 0)
+                this.body.body.velocity.x += 10;
 
         }
 
         if (this.cursor.up.isDown) {
-            this.playerObj.body.gravity.y = -500;
+            this.body.body.gravity.y = -500;
 
         } else if (this.cursor.down.isDown) {
-            this.playerObj.body.gravity.y = 500;
+            this.body.body.gravity.y = 500;
         } else {
-            if (this.playerObj.body.velocity.y > 0)
-                this.playerObj.body.velocity.y -= 10;
-            else if (this.playerObj.body.velocity.y < 0)
-                this.playerObj.body.velocity.y += 10;
+            if (this.body.body.velocity.y > 0)
+                this.body.body.velocity.y -= 10;
+            else if (this.body.body.velocity.y < 0)
+                this.body.body.velocity.y += 10;
         }
     }
 

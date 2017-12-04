@@ -27,11 +27,11 @@ var mainState = {
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
-        this.playerOne = new CreatePlayer('player', 'walk', 'FireAnimate');
+        this.playerOne = new CreatePlayer('player', 'walk', 'FireAnimate', 'bullet');
         this.playerOne.init();
         this.playerOne.setControlKey('cursor');
 
-        this.playerTwo = new CreatePlayer('player', 'walk', 'FireAnimate');
+        this.playerTwo = new CreatePlayer('player', 'walk', 'FireAnimate', 'bullet');
         this.playerTwo.init();
         this.playerTwo.setControlKey('');
 
@@ -45,7 +45,7 @@ var mainState = {
         // This function is called 60 times per second // It contains the game's logic 
         this.collide(this.playerOne);
         this.collide(this.playerTwo);
-        //game.physics.arcade.collide(this.playerOne.playerObj, this.wallH);
+        //game.physics.arcade.collide(this.playerOne.body, this.wallH);
 
         this.playerOne.move();
         this.playerTwo.move();
@@ -56,10 +56,10 @@ var mainState = {
     },
 
     collide: function(player) {
-        game.physics.arcade.collide(player.playerObj, this.wallLeft);
-        game.physics.arcade.collide(player.playerObj, this.wallRight);
-        game.physics.arcade.collide(player.playerObj, this.wallTop);
-        game.physics.arcade.collide(player.playerObj, this.wallDown);
+        game.physics.arcade.collide(player.body, this.wallLeft);
+        game.physics.arcade.collide(player.body, this.wallRight);
+        game.physics.arcade.collide(player.body, this.wallTop);
+        game.physics.arcade.collide(player.body, this.wallDown);
     },
     creatBorder: function() {
 
@@ -95,23 +95,3 @@ var game = new Phaser.Game(1350, 630, Phaser.AUTO, 'gameDiv');
 game.state.add('main', mainState);
 
 game.state.start('main');
-
-
-
-
-
-/*if (this.cursor.left.isDown) {
-            playerObj.body.velocity.x = -200;
-        } else if (this.cursor.left.isUp) {
-            playerObj.body.velocity.x = 0;
-
-        }
-
-        if (this.cursor.right.isDown) {
-
-            playerObj.body.velocity.x = 200;
-        } else if (this.cursor.up.isDown) {
-            playerObj.body.velocity.y = -200;
-        } else if (this.cursor.down.isDown) {
-            playerObj.body.velocity.y = 200;
-        }*/

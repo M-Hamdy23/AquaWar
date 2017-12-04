@@ -1,9 +1,9 @@
 var myBullets = [];
 var bulletsGroup;
 
-function Bullet(x, y, rotation, attendedSprite) {
+function Bullet(x, y, attendedSprite) {
 
-    var bullet = game.add.sprite(x + (x * Math.cos(rotation)) / 4, y + (y * Math.sin(rotation)) / 4, 'bullet1');
+    var bullet = game.add.sprite(x, y, 'bullet1');
     this.wallHitCount = 3;
     bullet.anchor.setTo(0.5, 0.5);
     bullet.scale.setTo(0.25, 0.25);
