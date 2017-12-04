@@ -7,7 +7,7 @@ var mainState = {
         game.load.image('wallV', 'assets/wallVertical.png');
         game.load.image('wallH', 'assets/wallHorizontal.png');
         game.load.image('bullet', 'assets/bullet.png');
-        game.load.image('env', 'assets/prototype_environment.jpg');
+        game.load.image('env', 'assets/environment.jpg');
     },
 
     create: function() {
@@ -74,7 +74,7 @@ var mainState = {
         this.wallRight.enableBody = true;
         this.wallRight.body.immovable = true;
 
-        this.wallTop = game.add.sprite(0, -60, 'wallH');
+        this.wallTop = game.add.sprite(0, 20, 'wallH');
         game.physics.arcade.enable(this.wallTop);
         this.wallTop.height = 0;
         this.wallTop.enableBody = true;

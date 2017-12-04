@@ -10,6 +10,7 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSprite
     this.LeftFlag = false;
 
     this.cursor;
+    this.isFire = false;
     this.init = function() {
         this.body = game.add.sprite(this.x, this.y, imageName);
         this.body.animations.add(this.animationName);
@@ -35,7 +36,10 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSprite
     }
 
     this.newBullet = function() {
-        let bul = new Bullet(bulletSpriteName, this.body.body.x + 100, this.body.body.y);
+        this.x = this.body.x;
+        this.y = this.body.y;
+        console.log("current: X=" + this.x + "  Y=" + this.y);
+        let bul = new Bullet(bulletSpriteName, this.x + 100, this.y);
         bul.init();
     }
     this.fire = function() {
@@ -47,6 +51,10 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSprite
 
                     /////////////////
                     //// creat bullet
+                    /*if (this.isFire) {
+                        this.newBullet();
+                        this.isFire = false;
+                    }*/
                     /////////////////
                     this.body.kill();
                     this.body = game.add.sprite(this.x, this.y, imageName);
@@ -64,6 +72,7 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSprite
                 }, this);
         }
         if (this.cursor.fire.isDown) {
+            this.isFire = true;
             this.x = this.body.x;
             this.y = this.body.y;
             this.body.kill();
@@ -80,6 +89,10 @@ var CreatePlayer = function(imageName, animateName, fireSpriteName, bulletSprite
             } else {
                 this.body.scale.x = 1;
 
+            }
+            if (this.isFire) {
+                this.newBullet();
+                this.isFire = false;
             }
         }
     }
